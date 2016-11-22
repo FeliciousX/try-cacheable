@@ -10,6 +10,9 @@ export function Users (sources) {
     method: 'GET'
   })
 
+  const route$ = sources.DOM.select( '#go' ).events( 'click' )
+  .mapTo( 'posts' )
+
   const response$ = sources.HTTP.select( 'read' ).flatten()
   .map( response => response.body );
 
@@ -22,12 +25,14 @@ export function Users (sources) {
     div({}, [
       h1( 'Users' ),
       button( { props: { id: 'btn' } }, ['Click me'] ),
+      button( { props: { id: 'go' } }, ['Posts'] ),
       ol({}, state.users.map( user => li( user.name ) ) )
     ])
   )
   const sinks = {
     DOM: vtree$,
     HTTP: request$,
+    router: route$,
     cache: state$
   }
   return sinks
