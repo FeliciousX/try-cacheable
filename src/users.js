@@ -18,7 +18,7 @@ export function Users (sources) {
 
   const reducer$ = response$.map( users => state => Object.assign({}, state, { users } ) )
 
-  const initialState = { users: [] }
+  const initialState = { name: 'users', users: [] }
   const state$ = reducer$.fold( (state, reducer) => reducer( state ), initialState )
 
   const vtree$ = state$.map( state =>

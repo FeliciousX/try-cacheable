@@ -18,7 +18,7 @@ export function Posts (sources) {
 
   const reducer$ = response$.map( posts => state => Object.assign({}, state, { posts } ) )
 
-  const initialState = { posts: [] }
+  const initialState = { name: 'posts', posts: [] }
   const state$ = reducer$.fold( (state, reducer) => reducer( state ), initialState )
 
   const vtree$ = state$.map( state =>

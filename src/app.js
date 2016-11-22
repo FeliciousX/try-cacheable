@@ -16,6 +16,7 @@ export function App (sources) {
   return {
     DOM: component$.map( c => c.DOM ).flatten(),
     HTTP: component$.map( c => c.HTTP ).flatten(),
-    router: component$.map( c => c.router ).flatten()
+    router: component$.map( c => c.router ).flatten(),
+    cache: component$.map( c => c.cache ).flatten()
   }
 }

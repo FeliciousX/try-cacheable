@@ -4,8 +4,9 @@ import {makeHTTPDriver} from '@cycle/http'
 import {makeRouterDriver} from 'cyclic-router'
 import {createHistory} from 'history'
 import {App} from './app'
+import {Cacheable} from './cacheable'
 
-const main = App
+const main = Cacheable( App )
 
 const drivers = {
   DOM: makeDOMDriver('#app'),
