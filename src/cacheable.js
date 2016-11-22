@@ -2,7 +2,7 @@ import xs from 'xstream';
 
 export function Cacheable( Component ) {
   return function( sources ) {
-    const cache$ = xs.create();
+    const cache$ = xs.createWithMemory();
 
     const sinks = Component( Object.assign({}, sources, {cache: cache$ }) );
 

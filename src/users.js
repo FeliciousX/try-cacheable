@@ -2,7 +2,10 @@ import {div, h1, button, ol, li} from '@cycle/dom'
 import xs from 'xstream'
 
 export function Users (sources) {
-  const request$ = xs.never().startWith({
+  const request$ = sources.cache
+  .filter( cache => ! cache.users )
+  .debug( 'request$' )
+  .mapTo({
     url: 'http://jsonplaceholder.typicode.com/users',
     category: 'read',
     accept: 'json',
@@ -15,9 +18,17 @@ export function Users (sources) {
   const response$ = sources.HTTP.select( 'read' ).flatten()
   .map( response => response.body );
 
-  const reducer$ = response$.map( users => state => Object.assign({}, state, { users } ) )
+  const responseReducer$ = response$.map( users => state => Object.assign({}, state, { users, cached: true } ) )
+  const useCacheReducer$ = sources.cache
+  .filter( cache => cache.users )
+  .debug( 'useCacheReducer$' )
+  .filter( cache => cache.users.cached )
+  .map( cache => () => cache.users )
+  .take( 1 )
 
-  const initialState = { name: 'users', users: [] }
+  const reducer$ = xs.merge( responseReducer$, useCacheReducer$ )
+
+  const initialState = { name: 'users', users: [], cached: false }
   const state$ = reducer$.fold( (state, reducer) => reducer( state ), initialState )
   .drop( 1 )
 
