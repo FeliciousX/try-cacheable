@@ -2,8 +2,7 @@ import {div, h1, button, ol, li} from '@cycle/dom'
 import xs from 'xstream'
 
 export function Users (sources) {
-  const request$ = sources.DOM.select( '#btn' ).events( 'click' )
-  .mapTo({
+  const request$ = xs.never().startWith({
     url: 'http://jsonplaceholder.typicode.com/users',
     category: 'read',
     accept: 'json',
@@ -20,11 +19,11 @@ export function Users (sources) {
 
   const initialState = { name: 'users', users: [] }
   const state$ = reducer$.fold( (state, reducer) => reducer( state ), initialState )
+  .drop( 1 )
 
   const vtree$ = state$.map( state =>
     div({}, [
       h1( 'Users' ),
-      button( { props: { id: 'btn' } }, ['Click me'] ),
       button( { props: { id: 'go' } }, ['Posts'] ),
       ol({}, state.users.map( user => li( user.name ) ) )
     ])
