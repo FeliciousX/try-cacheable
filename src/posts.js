@@ -13,7 +13,7 @@ export function Posts (sources) {
   .filter( cache => ! cache.posts )
   .debug( 'request$' )
   .mapTo({
-    url: 'http://jsonplaceholder.typicode.com/posts',
+    url: 'https://jsonplaceholder.typicode.com/posts',
     category: 'read',
     accept: 'json',
     method: 'GET'

@@ -6,7 +6,7 @@ export function Users (sources) {
   .filter( cache => ! cache.users )
   .debug( 'request$' )
   .mapTo({
-    url: 'http://jsonplaceholder.typicode.com/users',
+    url: 'https://jsonplaceholder.typicode.com/users',
     category: 'read',
     accept: 'json',
     method: 'GET'
