@@ -18,17 +18,16 @@ export function Users (sources) {
   const response$ = sources.HTTP.select( 'read' ).flatten()
   .map( response => response.body );
 
-  const responseReducer$ = response$.map( users => state => Object.assign({}, state, { users, cached: true } ) )
+  const responseReducer$ = response$.map( users => state => Object.assign({}, state, { users } ) )
   const useCacheReducer$ = sources.cache
   .filter( cache => cache.users )
-  .debug( 'useCacheReducer$' )
   .filter( cache => cache.users.cached )
   .map( cache => () => cache.users )
-  .take( 1 )
+  .take( 1 ) // take 1 doesn't work
 
   const reducer$ = xs.merge( responseReducer$, useCacheReducer$ )
 
-  const initialState = { name: 'users', users: [], cached: false }
+  const initialState = { name: 'users', users: [] }
   const state$ = reducer$.fold( (state, reducer) => reducer( state ), initialState )
   .drop( 1 )
 
