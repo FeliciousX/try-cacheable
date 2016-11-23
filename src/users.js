@@ -21,7 +21,6 @@ export function Users (sources) {
   const responseReducer$ = response$.map( users => state => Object.assign({}, state, { users } ) )
   const useCacheReducer$ = sources.cache
   .filter( cache => cache.users )
-  .filter( cache => cache.users.cached )
   .map( cache => () => cache.users )
   .take( 1 ) // take 1 doesn't work
 
